@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_radii.dart';
@@ -27,15 +26,16 @@ class GlassButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDisabled = onPressed == null;
     final borderRadius = BorderRadius.circular(AppRadii.pill);
 
     // Background
     final Color backgroundColor = isPrimary
-        ? AppColors.primary.withOpacity(0.8)
-        : AppColors.glassTintMed;
+        ? (isDisabled ? AppColors.primary.withOpacity(0.3) : AppColors.primary.withOpacity(0.8))
+        : (isDisabled ? AppColors.glassTintLow.withOpacity(0.5) : AppColors.glassTintMed);
 
     // Gradient (for primary)
-    final Gradient? gradient = isPrimary
+    final Gradient? gradient = isPrimary && !isDisabled
         ? const LinearGradient(
             colors: [Color(0xFF7C8CFF), Color(0xFF9B8CFF)],
             begin: Alignment.centerLeft,
@@ -43,7 +43,9 @@ class GlassButton extends StatelessWidget {
           )
         : null;
 
-    final Color contentColor = isPrimary ? Colors.white : AppColors.textPrimary;
+    final Color contentColor = isDisabled
+        ? AppColors.textMuted
+        : (isPrimary ? Colors.white : AppColors.textPrimary);
 
     Widget content = Row(
       mainAxisSize: MainAxisSize.min,
@@ -70,29 +72,15 @@ class GlassButton extends StatelessWidget {
         color: gradient == null ? backgroundColor : null,
         gradient: gradient,
         borderRadius: borderRadius,
-        border: isPrimary ? null : Border.all(color: AppColors.glassBorder, width: 1),
+        border: (isPrimary || isDisabled) ? null : Border.all(color: AppColors.glassBorder, width: 1),
       ),
       child: Center(child: content),
     );
 
-    // Apply Blur if not primary (Primary is solid/gradient usually, but can be glassy too)
-    // Prompt says "Liquid Glass Cinematic", so even buttons can be glassy.
-    // If primary, maybe less blur or solid.
-
-    if (!isPrimary) {
-      container = ClipRRect(
-        borderRadius: borderRadius,
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: container,
-        ),
-      );
-    }
-
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: onPressed == null ? null : () {
+        onTap: isDisabled ? null : () {
           AppHaptics.buttonPress();
           onPressed!();
         },

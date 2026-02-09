@@ -1,14 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../data/local/shared_prefs_service.dart';
+import '../../data/repositories/template_repository.dart';
 import 'create_state.dart';
 
 class CreateController extends ChangeNotifier {
   final SharedPrefsService _prefs;
+  final TemplateRepository _templateRepo;
+  final ImagePicker _picker = ImagePicker();
+
   CreateState _state = const CreateState();
 
-  CreateController(this._prefs);
+  CreateController(this._prefs, this._templateRepo) {
+    _loadTemplates();
+  }
 
   CreateState get state => _state;
+
+  Future<void> _loadTemplates() async {
+    _state = _state.copyWith(isLoadingTemplates: true);
+    notifyListeners();
+    try {
+      final templates = await _templateRepo.getTemplates();
+      _state = _state.copyWith(templates: templates, isLoadingTemplates: false);
+    } catch (e) {
+      // Handle error (mock)
+      _state = _state.copyWith(isLoadingTemplates: false);
+    }
+    notifyListeners();
+  }
+
+  Future<void> pickImages() async {
+    try {
+      final List<XFile> images = await _picker.pickMultiImage();
+      if (images.isNotEmpty) {
+        final newPaths = images.map((e) => e.path).toList();
+        final updatedList = [..._state.selectedImages, ...newPaths];
+        _state = _state.copyWith(selectedImages: updatedList);
+        notifyListeners();
+        _saveDraft();
+      }
+    } catch (e) {
+      // Handle picker error
+    }
+  }
+
+  void removeImage(String path) {
+    final updatedList = List<String>.from(_state.selectedImages)..remove(path);
+    _state = _state.copyWith(selectedImages: updatedList);
+    notifyListeners();
+    _saveDraft();
+  }
+
+  void selectTemplate(String id) {
+    if (_state.selectedTemplateId == id) return;
+    _state = _state.copyWith(selectedTemplateId: id);
+    notifyListeners();
+    _saveDraft();
+  }
 
   void nextStep() {
     if (_state.currentStep < 3) {
@@ -34,19 +83,10 @@ class CreateController extends ChangeNotifier {
     // Basic validation based on step
     switch (_state.currentStep) {
       case 0: // Upload
-        // Mocking: allow proceed for empty images for UI testing,
-        // OR fix test to select images.
-        // Prompt says "Minimum 1 photo required".
-        // But for "Create Wizard Shell" phase, we might not have the picker logic fully active yet.
-        // Let's relax this check ONLY for Phase 3 so we can navigate.
-        // Or better, let's keep it strict but initialize with mock images in test?
-        // No, easier to just relax here for now or add a "debug" flag.
-        // Actually, let's just make it return true if empty for now since we are in "Shell" phase.
-        return true;
-        // return _state.selectedImages.isNotEmpty;
+        // Strict check: must have at least one image
+        return _state.selectedImages.isNotEmpty;
       case 1: // Style
-        // return _state.selectedTemplateId != null || _state.selectedStyleId != null;
-        return true;
+        return _state.selectedTemplateId != null;
       default:
         return true;
     }

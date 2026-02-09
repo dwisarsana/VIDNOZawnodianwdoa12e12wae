@@ -5,6 +5,7 @@ import '../../core/widgets/bottom_action_bar.dart';
 import '../../core/widgets/glass_button.dart';
 import '../../core/widgets/secondary_button.dart';
 import '../../data/local/shared_prefs_service.dart';
+import '../../data/repositories/template_repository.dart';
 import 'create_controller.dart';
 import 'widgets/step_header.dart';
 import 'steps/upload_step.dart';
@@ -21,6 +22,9 @@ class CreateScreen extends StatefulWidget {
 
 class _CreateScreenState extends State<CreateScreen> {
   CreateController? _controller;
+  // Use a local TemplateRepository instance (mock usually doesn't need to be singleton unless caching)
+  // In real app, use dependency injection (GetIt/Riverpod/Provider)
+  final TemplateRepository _templateRepo = TemplateRepository();
 
   @override
   void initState() {
@@ -32,7 +36,7 @@ class _CreateScreenState extends State<CreateScreen> {
     final prefs = await SharedPrefsService.getInstance();
     if (!mounted) return;
     setState(() {
-      _controller = CreateController(prefs);
+      _controller = CreateController(prefs, _templateRepo);
     });
   }
 
@@ -79,13 +83,22 @@ class _CreateScreenState extends State<CreateScreen> {
               child: AnimatedBuilder(
                 animation: _controller!,
                 builder: (context, _) {
+                  // IndexedStack keeps state, but children need access to controller updates.
+                  // Since we pass controller in constructor, and controller is ChangeNotifier,
+                  // children can listen if they are AnimatedWidget or use AnimatedBuilder inside.
+                  // UploadStep and StyleStep are stateless but rebuilt here when controller notifies?
+                  // NO. IndexedStack children are built once if they are const or stable.
+                  // BUT here we are inside AnimatedBuilder's builder.
+                  // Does IndexedStack rebuild children? Only if widgets change.
+                  // We construct new instances of Steps here on every notifyListeners.
+                  // This is fine for this scale.
                   return IndexedStack(
                     index: _controller!.state.currentStep,
-                    children: const [
-                      UploadStep(),
-                      StyleStep(),
-                      DurationStep(),
-                      ReviewStep(),
+                    children: [
+                      UploadStep(controller: _controller!),
+                      StyleStep(controller: _controller!),
+                      const DurationStep(),
+                      const ReviewStep(),
                     ],
                   );
                 },
@@ -99,6 +112,7 @@ class _CreateScreenState extends State<CreateScreen> {
                 final step = _controller!.state.currentStep;
                 final isFirst = step == 0;
                 final isLast = step == 3;
+                final canProceed = _controller!.canProceed();
 
                 return BottomActionBar(
                   padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
@@ -110,8 +124,11 @@ class _CreateScreenState extends State<CreateScreen> {
                         ),
                   primaryAction: GlassButton(
                     text: isLast ? 'Generate' : 'Next',
-                    isPrimary: true,
-                    onPressed: _controller!.canProceed()
+                    isPrimary: true, // Always primary style, but opacity changes if disabled?
+                    // GlassButton doesn't support disabled visual state explicitly yet,
+                    // but onPressed: null disables click.
+                    // We might want to add visual feedback for disabled state in GlassButton later.
+                    onPressed: canProceed
                         ? () => _controller!.nextStep()
                         : null,
                   ),

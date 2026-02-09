@@ -1,0 +1,13 @@
+lib/features/create/steps/style_step.dart:import '../../../../app/theme/app_colors.dart';
+lib/features/create/steps/style_step.dart:import '../../../../app/theme/app_typography.dart';
+lib/features/create/steps/upload_step.dart:import '../../../../app/theme/app_colors.dart';
+lib/features/create/steps/upload_step.dart:import '../../../../app/theme/app_typography.dart';
+lib/features/create/steps/upload_step.dart:import '../../../../core/widgets/glass_card.dart';
+lib/features/create/widgets/upload_grid.dart:import '../../../../app/theme/app_colors.dart';
+lib/features/create/widgets/upload_grid.dart:import '../../../../app/theme/app_radii.dart';
+lib/features/create/widgets/upload_grid.dart:import '../../../../app/theme/app_typography.dart';
+lib/features/create/widgets/upload_grid.dart:import '../../../../core/widgets/glass_card.dart';
+lib/features/create/widgets/style_card.dart:import '../../../../app/theme/app_colors.dart';
+lib/features/create/widgets/style_card.dart:import '../../../../app/theme/app_typography.dart';
+lib/features/create/widgets/style_card.dart:import '../../../../app/theme/app_radii.dart';
+lib/features/create/widgets/style_card.dart:import '../../../../domain/models/template_item.dart';
