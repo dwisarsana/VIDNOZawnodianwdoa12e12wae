@@ -1,0 +1,80 @@
+00:00 +0: loading /app/test/create_wizard_test.dart                                                                                                                                                    00:01 +0: loading /app/test/create_wizard_test.dart                                                                                                                                                    lib/features/create/widgets/step_header.dart:2:8: Error: Error when reading 'lib/features/app/theme/app_colors.dart': No such file or directory
+import '../../app/theme/app_colors.dart';
+       ^
+lib/features/create/widgets/step_header.dart:3:8: Error: Error when reading 'lib/features/app/theme/app_typography.dart': No such file or directory
+import '../../app/theme/app_typography.dart';
+       ^
+lib/features/create/widgets/step_header.dart:4:8: Error: Error when reading 'lib/features/app/theme/app_radii.dart': No such file or directory
+import '../../app/theme/app_radii.dart';
+       ^
+lib/features/create/widgets/step_header.dart:42:63: Error: Not a constant expression.
+              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
+                                                              ^^^^^^^^^
+lib/features/create/widgets/step_header.dart:28:24: Error: The getter 'AppTypography' isn't defined for the type 'StepHeader'.
+ - 'StepHeader' is from 'package:vidnoz_ai/features/create/widgets/step_header.dart' ('lib/features/create/widgets/step_header.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'AppTypography'.
+                style: AppTypography.h2,
+                       ^^^^^^^^^^^^^
+lib/features/create/widgets/step_header.dart:32:24: Error: The getter 'AppTypography' isn't defined for the type 'StepHeader'.
+ - 'StepHeader' is from 'package:vidnoz_ai/features/create/widgets/step_header.dart' ('lib/features/create/widgets/step_header.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'AppTypography'.
+                style: AppTypography.caption.copyWith(color: AppColors.primary),
+                       ^^^^^^^^^^^^^
+lib/features/create/widgets/step_header.dart:32:62: Error: The getter 'AppColors' isn't defined for the type 'StepHeader'.
+ - 'StepHeader' is from 'package:vidnoz_ai/features/create/widgets/step_header.dart' ('lib/features/create/widgets/step_header.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'AppColors'.
+                style: AppTypography.caption.copyWith(color: AppColors.primary),
+                                                             ^^^^^^^^^
+lib/features/create/widgets/step_header.dart:38:49: Error: The getter 'AppRadii' isn't defined for the type 'StepHeader'.
+ - 'StepHeader' is from 'package:vidnoz_ai/features/create/widgets/step_header.dart' ('lib/features/create/widgets/step_header.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'AppRadii'.
+            borderRadius: BorderRadius.circular(AppRadii.pill),
+                                                ^^^^^^^^
+lib/features/create/widgets/step_header.dart:41:32: Error: The getter 'AppColors' isn't defined for the type 'StepHeader'.
+ - 'StepHeader' is from 'package:vidnoz_ai/features/create/widgets/step_header.dart' ('lib/features/create/widgets/step_header.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'AppColors'.
+              backgroundColor: AppColors.glassTintLow,
+                               ^^^^^^^^^
+00:01 +0 -1: loading /app/test/create_wizard_test.dart [E]
+  Failed to load "/app/test/create_wizard_test.dart":
+  Compilation failed for testPath=/app/test/create_wizard_test.dart: lib/features/create/widgets/step_header.dart:2:8: Error: Error when reading 'lib/features/app/theme/app_colors.dart': No such file or directory
+  import '../../app/theme/app_colors.dart';
+         ^
+  lib/features/create/widgets/step_header.dart:3:8: Error: Error when reading 'lib/features/app/theme/app_typography.dart': No such file or directory
+  import '../../app/theme/app_typography.dart';
+         ^
+  lib/features/create/widgets/step_header.dart:4:8: Error: Error when reading 'lib/features/app/theme/app_radii.dart': No such file or directory
+  import '../../app/theme/app_radii.dart';
+         ^
+  lib/features/create/widgets/step_header.dart:42:63: Error: Not a constant expression.
+                valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
+                                                                ^^^^^^^^^
+  lib/features/create/widgets/step_header.dart:28:24: Error: The getter 'AppTypography' isn't defined for the type 'StepHeader'.
+   - 'StepHeader' is from 'package:vidnoz_ai/features/create/widgets/step_header.dart' ('lib/features/create/widgets/step_header.dart').
+  Try correcting the name to the name of an existing getter, or defining a getter or field named 'AppTypography'.
+                  style: AppTypography.h2,
+                         ^^^^^^^^^^^^^
+  lib/features/create/widgets/step_header.dart:32:24: Error: The getter 'AppTypography' isn't defined for the type 'StepHeader'.
+   - 'StepHeader' is from 'package:vidnoz_ai/features/create/widgets/step_header.dart' ('lib/features/create/widgets/step_header.dart').
+  Try correcting the name to the name of an existing getter, or defining a getter or field named 'AppTypography'.
+                  style: AppTypography.caption.copyWith(color: AppColors.primary),
+                         ^^^^^^^^^^^^^
+  lib/features/create/widgets/step_header.dart:32:62: Error: The getter 'AppColors' isn't defined for the type 'StepHeader'.
+   - 'StepHeader' is from 'package:vidnoz_ai/features/create/widgets/step_header.dart' ('lib/features/create/widgets/step_header.dart').
+  Try correcting the name to the name of an existing getter, or defining a getter or field named 'AppColors'.
+                  style: AppTypography.caption.copyWith(color: AppColors.primary),
+                                                               ^^^^^^^^^
+  lib/features/create/widgets/step_header.dart:38:49: Error: The getter 'AppRadii' isn't defined for the type 'StepHeader'.
+   - 'StepHeader' is from 'package:vidnoz_ai/features/create/widgets/step_header.dart' ('lib/features/create/widgets/step_header.dart').
+  Try correcting the name to the name of an existing getter, or defining a getter or field named 'AppRadii'.
+              borderRadius: BorderRadius.circular(AppRadii.pill),
+                                                  ^^^^^^^^
+  lib/features/create/widgets/step_header.dart:41:32: Error: The getter 'AppColors' isn't defined for the type 'StepHeader'.
+   - 'StepHeader' is from 'package:vidnoz_ai/features/create/widgets/step_header.dart' ('lib/features/create/widgets/step_header.dart').
+  Try correcting the name to the name of an existing getter, or defining a getter or field named 'AppColors'.
+                backgroundColor: AppColors.glassTintLow,
+                                 ^^^^^^^^^
+  .
+
+To run this test again: /opt/flutter/bin/cache/dart-sdk/bin/dart test /app/test/create_wizard_test.dart -p vm --plain-name 'loading /app/test/create_wizard_test.dart'
+00:01 +0 -1: Some tests failed.
