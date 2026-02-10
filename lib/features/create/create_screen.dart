@@ -22,8 +22,6 @@ class CreateScreen extends StatefulWidget {
 
 class _CreateScreenState extends State<CreateScreen> {
   CreateController? _controller;
-  // Use a local TemplateRepository instance (mock usually doesn't need to be singleton unless caching)
-  // In real app, use dependency injection (GetIt/Riverpod/Provider)
   final TemplateRepository _templateRepo = TemplateRepository();
 
   @override
@@ -83,21 +81,12 @@ class _CreateScreenState extends State<CreateScreen> {
               child: AnimatedBuilder(
                 animation: _controller!,
                 builder: (context, _) {
-                  // IndexedStack keeps state, but children need access to controller updates.
-                  // Since we pass controller in constructor, and controller is ChangeNotifier,
-                  // children can listen if they are AnimatedWidget or use AnimatedBuilder inside.
-                  // UploadStep and StyleStep are stateless but rebuilt here when controller notifies?
-                  // NO. IndexedStack children are built once if they are const or stable.
-                  // BUT here we are inside AnimatedBuilder's builder.
-                  // Does IndexedStack rebuild children? Only if widgets change.
-                  // We construct new instances of Steps here on every notifyListeners.
-                  // This is fine for this scale.
                   return IndexedStack(
                     index: _controller!.state.currentStep,
                     children: [
                       UploadStep(controller: _controller!),
                       StyleStep(controller: _controller!),
-                      const DurationStep(),
+                      DurationStep(controller: _controller!),
                       const ReviewStep(),
                     ],
                   );
@@ -124,10 +113,7 @@ class _CreateScreenState extends State<CreateScreen> {
                         ),
                   primaryAction: GlassButton(
                     text: isLast ? 'Generate' : 'Next',
-                    isPrimary: true, // Always primary style, but opacity changes if disabled?
-                    // GlassButton doesn't support disabled visual state explicitly yet,
-                    // but onPressed: null disables click.
-                    // We might want to add visual feedback for disabled state in GlassButton later.
+                    isPrimary: true,
                     onPressed: canProceed
                         ? () => _controller!.nextStep()
                         : null,

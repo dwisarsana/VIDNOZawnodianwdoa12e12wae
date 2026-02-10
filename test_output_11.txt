@@ -1,0 +1,35 @@
+00:00 +0: loading /app/test/duration_cost_test.dart                                                                                                                                                    00:01 +0: loading /app/test/duration_cost_test.dart                                                                                                                                                    00:02 +0: loading /app/test/duration_cost_test.dart                                                                                                                                                    00:02 +0: Duration Step and Cost Calculation UI Test                                                                                                                                                   00:03 +0: Duration Step and Cost Calculation UI Test                                                                                                                                                   00:04 +0: Duration Step and Cost Calculation UI Test                                                                                                                                                   00:04 +0: Duration Step and Cost Calculation UI Test
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following StateError was thrown running a test:
+Bad state: Too many elements
+
+When the exception was thrown, this was the stack:
+#0      Iterable.single (dart:core/iterable.dart:696:24)
+#1      WidgetController.element (package:flutter_test/src/controller.dart:868:30)
+#2      WidgetController.dragUntilVisible.<anonymous closure> (package:flutter_test/src/controller.dart:2398:38)
+<asynchronous suspension>
+#3      TestAsyncUtils.guard.<anonymous closure> (package:flutter_test/src/test_async_utils.dart:130:27)
+<asynchronous suspension>
+#4      WidgetController.scrollUntilVisible.<anonymous closure> (package:flutter_test/src/controller.dart:2355:7)
+<asynchronous suspension>
+#5      TestAsyncUtils.guard.<anonymous closure> (package:flutter_test/src/test_async_utils.dart:130:27)
+<asynchronous suspension>
+#6      main.<anonymous closure> (file:///app/test/duration_cost_test.dart:79:5)
+<asynchronous suspension>
+#7      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#8      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1059:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  Duration Step and Cost Calculation UI Test
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +0 -1: Duration Step and Cost Calculation UI Test [E]
+  Test failed. See exception logs above.
+  The test description was: Duration Step and Cost Calculation UI Test
+
+
+To run this test again: /opt/flutter/bin/cache/dart-sdk/bin/dart test /app/test/duration_cost_test.dart -p vm --plain-name 'Duration Step and Cost Calculation UI Test'
+00:04 +0 -1: Some tests failed.

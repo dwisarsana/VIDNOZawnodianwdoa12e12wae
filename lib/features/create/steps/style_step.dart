@@ -38,6 +38,7 @@ class StyleStep extends StatelessWidget {
       itemBuilder: (context, index) {
         final template = templates[index];
         return GestureDetector(
+          key: ValueKey('style_card_${template.id}'),
           onTap: () => controller.selectTemplate(template.id),
           child: StyleCard(
             template: template,
