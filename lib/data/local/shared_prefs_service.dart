@@ -110,4 +110,7 @@ class SharedPrefsService {
   // Tab Index
   int getLastOpenedTabIndex() => getInt(PrefsKeys.lastOpenedTabIndex, defaultValue: 0);
   Future<bool> setLastOpenedTabIndex(int index) => setInt(PrefsKeys.lastOpenedTabIndex, index);
+
+  // Clear
+  Future<bool> clearAll() => _prefs!.clear();
 }

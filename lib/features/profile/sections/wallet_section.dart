@@ -43,11 +43,14 @@ class WalletSection extends StatelessWidget {
                 style: AppTypography.display.copyWith(color: AppColors.textPrimary),
               ),
               const SizedBox(width: 8),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 6),
-                child: Text(
-                  'tokens available',
-                  style: AppTypography.body.copyWith(color: AppColors.textSecondary),
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 6),
+                  child: Text(
+                    'tokens available',
+                    style: AppTypography.body.copyWith(color: AppColors.textSecondary),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
             ],
