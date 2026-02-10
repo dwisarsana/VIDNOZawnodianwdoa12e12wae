@@ -26,20 +26,14 @@ class RootShellController extends ChangeNotifier {
   void switchToCreateWithTemplate(TemplateItem template) {
     _pendingTemplateSelection = template;
     setIndex(0); // 0 is Create
-    // After switching, the CreateScreen should check this.
-    // BUT CreateScreen is kept alive in IndexedStack.
-    // We need a way to push data to it.
-    // The controller is shared via this notifyListeners.
-    // But CreateScreen needs to listen to RootShellController?
-    // Usually via passing the controller down or Context.
-
-    // Alternative: setIndex updates, but we need to trigger CreateScreen action.
-    // We will clear the pending selection after consumption.
+    // The view (RootShell) will rebuild with new index and pass _pendingTemplateSelection to CreateScreen
   }
 
   void consumePendingTemplate() {
     _pendingTemplateSelection = null;
-    // No notify needed if just clearing internal state after use,
-    // unless UI depends on it being null.
+    // No notify needed if we just clear it to avoid re-triggering?
+    // Actually, CreateScreen calls this. If we notify, it rebuilds CreateScreen with null?
+    // Yes, that's fine.
+    notifyListeners();
   }
 }

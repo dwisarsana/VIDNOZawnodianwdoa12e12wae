@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../app/theme/app_colors.dart';
-import '../../app/theme/app_gradients.dart';
 import '../../data/local/shared_prefs_service.dart';
 import '../create/create_screen.dart';
 import '../projects/projects_screen.dart';
@@ -90,7 +89,7 @@ class _GlassNavBar extends StatelessWidget {
         child: Container(
           height: 84 + MediaQuery.of(context).padding.bottom / 2,
           padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom / 2),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: AppColors.glassTintMed,
             border: Border(
               top: BorderSide(color: AppColors.glassBorder, width: 0.5),
