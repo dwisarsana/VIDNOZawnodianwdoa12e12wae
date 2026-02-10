@@ -1,0 +1,75 @@
+00:00 +0: loading /app/test/result_screen_test.dart                                                                                                                                                    00:01 +0: loading /app/test/result_screen_test.dart                                                                                                                                                    00:02 +0: loading /app/test/result_screen_test.dart                                                                                                                                                    00:03 +0: loading /app/test/result_screen_test.dart                                                                                                                                                    00:04 +0: loading /app/test/result_screen_test.dart                                                                                                                                                    00:04 +0: Result Screen displays project details and actions                                                                                                                                           00:05 +0: Result Screen displays project details and actions                                                                                                                                           00:06 +0: Result Screen displays project details and actions                                                                                                                                           00:06 +0: Result Screen displays project details and actions
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞═════════════════════════════════════════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 1.9 pixels on the right.
+
+The relevant error-causing widget was:
+  Row Row:file:///app/lib/core/widgets/glass_button.dart:50:22
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in the rendering with a yellow and
+black striped pattern. This is usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget) to force the children of the
+RenderFlex to fit within the available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that there is content that cannot be
+seen. If the content is legitimately bigger than the available space, consider clipping it with a
+ClipRect widget before putting it in the flex, or using a scrollable container rather than a Flex,
+like a ListView.
+The specific RenderFlex in question is: RenderFlex#92cc3 relayoutBoundary=up1 OVERFLOWING:
+  creator: Row ← Center ← Padding ← DecoratedBox ← ConstrainedBox ← Container ← Listener ←
+    RawGestureDetector ← GestureDetector ← Semantics ← DefaultSelectionStyle ← Builder ← ⋯
+  parentData: offset=Offset(0.0, 17.0) (can use size)
+  constraints: BoxConstraints(0.0<=w<=107.3, 0.0<=h<=54.0)
+  size: Size(107.3, 20.0)
+  direction: horizontal
+  mainAxisAlignment: center
+  mainAxisSize: min
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞═════════════════════════════════════════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 1.9 pixels on the right.
+
+The relevant error-causing widget was:
+  Row Row:file:///app/lib/core/widgets/glass_button.dart:50:22
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in the rendering with a yellow and
+black striped pattern. This is usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget) to force the children of the
+RenderFlex to fit within the available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that there is content that cannot be
+seen. If the content is legitimately bigger than the available space, consider clipping it with a
+ClipRect widget before putting it in the flex, or using a scrollable container rather than a Flex,
+like a ListView.
+The specific RenderFlex in question is: RenderFlex#01885 relayoutBoundary=up1 OVERFLOWING:
+  creator: Row ← Center ← Padding ← DecoratedBox ← ConstrainedBox ← Container ← Listener ←
+    RawGestureDetector ← GestureDetector ← Semantics ← DefaultSelectionStyle ← Builder ← ⋯
+  parentData: offset=Offset(0.0, 17.0) (can use size)
+  constraints: BoxConstraints(0.0<=w<=107.3, 0.0<=h<=54.0)
+  size: Size(107.3, 20.0)
+  direction: horizontal
+  mainAxisAlignment: center
+  mainAxisSize: min
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:06 +0 -1: Result Screen displays project details and actions [E]
+  Test failed. See exception logs above.
+  The test description was: Result Screen displays project details and actions
+
+
+To run this test again: /opt/flutter/bin/cache/dart-sdk/bin/dart test /app/test/result_screen_test.dart -p vm --plain-name 'Result Screen displays project details and actions'
+00:06 +0 -1: Some tests failed.

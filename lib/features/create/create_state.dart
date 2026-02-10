@@ -17,6 +17,7 @@ class CreateState {
   final int estimatedCost;
   final bool isReviewConfirmed;
   final bool hasDraftDetected; // Signal to UI
+  final String? lastCreatedProjectId;
 
   const CreateState({
     this.currentStep = 0,
@@ -31,6 +32,7 @@ class CreateState {
     this.estimatedCost = 0,
     this.isReviewConfirmed = false,
     this.hasDraftDetected = false,
+    this.lastCreatedProjectId,
   });
 
   CreateState copyWith({
@@ -46,6 +48,7 @@ class CreateState {
     int? estimatedCost,
     bool? isReviewConfirmed,
     bool? hasDraftDetected,
+    String? lastCreatedProjectId,
   }) {
     return CreateState(
       currentStep: currentStep ?? this.currentStep,
@@ -60,6 +63,7 @@ class CreateState {
       estimatedCost: estimatedCost ?? this.estimatedCost,
       isReviewConfirmed: isReviewConfirmed ?? this.isReviewConfirmed,
       hasDraftDetected: hasDraftDetected ?? this.hasDraftDetected,
+      lastCreatedProjectId: lastCreatedProjectId ?? this.lastCreatedProjectId,
     );
   }
 }

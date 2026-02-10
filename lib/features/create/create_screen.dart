@@ -6,10 +6,13 @@ import '../../core/widgets/glass_button.dart';
 import '../../core/widgets/secondary_button.dart';
 import '../../data/local/shared_prefs_service.dart';
 import '../../data/repositories/draft_repository.dart';
+import '../../data/repositories/project_repository.dart';
 import '../../data/repositories/template_repository.dart';
 import '../../data/repositories/wallet_repository.dart';
 import '../profile/paywall/paywall_screen.dart';
+import '../result/result_screen.dart';
 import 'create_controller.dart';
+import 'widgets/generate_progress_sheet.dart';
 import 'widgets/step_header.dart';
 import 'steps/upload_step.dart';
 import 'steps/style_step.dart';
@@ -28,6 +31,7 @@ class _CreateScreenState extends State<CreateScreen> {
   final TemplateRepository _templateRepo = TemplateRepository();
   late final DraftRepository _draftRepo;
   late final WalletRepository _walletRepo;
+  late final ProjectRepository _projectRepo;
 
   @override
   void initState() {
@@ -39,11 +43,12 @@ class _CreateScreenState extends State<CreateScreen> {
     final prefs = await SharedPrefsService.getInstance();
     _draftRepo = DraftRepository(prefs);
     _walletRepo = WalletRepository(prefs);
+    _projectRepo = ProjectRepository(prefs);
 
     if (!mounted) return;
 
     setState(() {
-      _controller = CreateController(prefs, _templateRepo, _draftRepo, _walletRepo);
+      _controller = CreateController(prefs, _templateRepo, _draftRepo, _walletRepo, _projectRepo);
     });
 
     _controller!.addListener(_checkDraft);
@@ -87,25 +92,54 @@ class _CreateScreenState extends State<CreateScreen> {
   Future<void> _handleNext() async {
     final isLast = _controller!.state.currentStep == 3;
     if (isLast) {
-      // Generate flow -> Check wallet
-      final success = await _controller!.attemptGenerate();
-      if (!success) {
-        // Show Paywall
+      // 1. Check Wallet
+      final canPay = await _controller!.attemptGenerate();
+      if (!canPay) {
         if (mounted) {
-          final bought = await PaywallScreen.show(context);
-          if (bought == true) {
-            // Retry automatically or just let user tap Generate again?
-            // User can tap again.
-          }
+          await PaywallScreen.show(context);
+          // Retry logic left to user to click again
         }
-      } else {
-        // Proceed to Phase 8 logic (Success mock)
-        // For now just pop or show success message as placeholder
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Generation Started! (Mock)')),
-          );
-        }
+        return;
+      }
+
+      // 2. Start Generation (Stream)
+      final stream = _controller!.startGeneration();
+
+      // 3. Show Progress Sheet
+      if (mounted) {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          isDismissible: false,
+          enableDrag: false,
+          backgroundColor: Colors.transparent,
+          builder: (ctx) => GenerateProgressSheet(
+            progressStream: stream,
+            onCancel: () {
+              Navigator.pop(ctx);
+              // Handle cancel logic (restore tokens? or just stop)
+              // Mock: just close.
+            },
+            onRetry: () {
+              Navigator.pop(ctx);
+              _handleNext(); // Retry flow
+            },
+            onSuccess: (path) {
+              Navigator.pop(ctx); // Close sheet
+              _controller!.finalizeGeneration(true, path);
+
+              // Navigate to Result
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => ResultScreen(
+                    resultPath: path,
+                    projectId: _controller!.state.lastCreatedProjectId!,
+                  ),
+                ),
+              );
+            },
+          ),
+        );
       }
     } else {
       _controller!.nextStep();

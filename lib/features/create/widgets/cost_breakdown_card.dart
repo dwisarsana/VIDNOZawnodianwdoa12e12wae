@@ -63,11 +63,15 @@ class CostBreakdownCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Total Estimated',
-                style: AppTypography.h3,
+              Expanded(
+                child: Text(
+                  'Total Estimated',
+                  style: AppTypography.h3,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(Icons.token, color: AppColors.warning, size: 20),
                   const SizedBox(width: 4),

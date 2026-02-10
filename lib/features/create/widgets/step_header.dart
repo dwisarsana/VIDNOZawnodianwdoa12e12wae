@@ -23,10 +23,14 @@ class StepHeader extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                _stepTitle(currentStep),
-                style: AppTypography.h2,
+              Expanded(
+                child: Text(
+                  _stepTitle(currentStep),
+                  style: AppTypography.h2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
+              const SizedBox(width: 8),
               Text(
                 'Step ${currentStep + 1}/$totalSteps',
                 style: AppTypography.caption.copyWith(color: AppColors.primary),

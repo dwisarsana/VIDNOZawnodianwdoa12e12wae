@@ -1,0 +1,20 @@
+00:00 +0: loading /app/test/result_screen_test.dart                                                                                                                                                    00:01 +0: loading /app/test/result_screen_test.dart                                                                                                                                                    Error: Couldn't resolve the package 'provider' in 'package:provider/provider.dart'.
+lib/features/result/result_screen.dart:14:8: Error: Not found: 'package:provider/provider.dart'
+import 'package:provider/provider.dart'; // We don't use provider package generally, but logic here is complex.
+       ^
+lib/features/result/widgets/video_preview_card.dart:35:38: Error: Member not found: 'primaryGlow'.
+                boxShadow: AppColors.primaryGlow,
+                                     ^^^^^^^^^^^
+00:01 +0 -1: loading /app/test/result_screen_test.dart [E]
+  Failed to load "/app/test/result_screen_test.dart":
+  Compilation failed for testPath=/app/test/result_screen_test.dart: Error: Couldn't resolve the package 'provider' in 'package:provider/provider.dart'.
+  lib/features/result/result_screen.dart:14:8: Error: Not found: 'package:provider/provider.dart'
+  import 'package:provider/provider.dart'; // We don't use provider package generally, but logic here is complex.
+         ^
+  lib/features/result/widgets/video_preview_card.dart:35:38: Error: Member not found: 'primaryGlow'.
+                  boxShadow: AppColors.primaryGlow,
+                                       ^^^^^^^^^^^
+  .
+
+To run this test again: /opt/flutter/bin/cache/dart-sdk/bin/dart test /app/test/result_screen_test.dart -p vm --plain-name 'loading /app/test/result_screen_test.dart'
+00:01 +0 -1: Some tests failed.
