@@ -7,6 +7,8 @@ import '../../core/widgets/secondary_button.dart';
 import '../../data/local/shared_prefs_service.dart';
 import '../../data/repositories/draft_repository.dart';
 import '../../data/repositories/template_repository.dart';
+import '../../data/repositories/wallet_repository.dart';
+import '../profile/paywall/paywall_screen.dart';
 import 'create_controller.dart';
 import 'widgets/step_header.dart';
 import 'steps/upload_step.dart';
@@ -25,6 +27,7 @@ class _CreateScreenState extends State<CreateScreen> {
   CreateController? _controller;
   final TemplateRepository _templateRepo = TemplateRepository();
   late final DraftRepository _draftRepo;
+  late final WalletRepository _walletRepo;
 
   @override
   void initState() {
@@ -35,32 +38,21 @@ class _CreateScreenState extends State<CreateScreen> {
   Future<void> _init() async {
     final prefs = await SharedPrefsService.getInstance();
     _draftRepo = DraftRepository(prefs);
+    _walletRepo = WalletRepository(prefs);
+
     if (!mounted) return;
 
     setState(() {
-      _controller = CreateController(prefs, _templateRepo, _draftRepo);
+      _controller = CreateController(prefs, _templateRepo, _draftRepo, _walletRepo);
     });
 
-    // Listen for draft detection
     _controller!.addListener(_checkDraft);
   }
 
   void _checkDraft() {
     if (!mounted) return;
     if (_controller!.state.hasDraftDetected) {
-      // Show Dialog
-      // Need to avoid showing multiple times or if already handling
-      // Controller keeps hasDraftDetected=true until handled.
-      // We should show it once.
-      // But we are in a listener.
-      // Use a post-frame callback or check if dialog is open?
-      // Better: Reset flag immediately in controller when taking action,
-      // but here we just want to trigger UI.
-      // Let's show it.
-
-      // Prevent re-entry if needed, but for simple mock flow:
-      _controller!.removeListener(_checkDraft); // Remove listener to avoid loop/re-trigger
-
+      _controller!.removeListener(_checkDraft);
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -89,6 +81,34 @@ class _CreateScreenState extends State<CreateScreen> {
           ],
         ),
       );
+    }
+  }
+
+  Future<void> _handleNext() async {
+    final isLast = _controller!.state.currentStep == 3;
+    if (isLast) {
+      // Generate flow -> Check wallet
+      final success = await _controller!.attemptGenerate();
+      if (!success) {
+        // Show Paywall
+        if (mounted) {
+          final bought = await PaywallScreen.show(context);
+          if (bought == true) {
+            // Retry automatically or just let user tap Generate again?
+            // User can tap again.
+          }
+        }
+      } else {
+        // Proceed to Phase 8 logic (Success mock)
+        // For now just pop or show success message as placeholder
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Generation Started! (Mock)')),
+          );
+        }
+      }
+    } else {
+      _controller!.nextStep();
     }
   }
 
@@ -175,7 +195,7 @@ class _CreateScreenState extends State<CreateScreen> {
                     text: isLast ? 'Generate' : 'Next',
                     isPrimary: true,
                     onPressed: canProceed
-                        ? () => _controller!.nextStep()
+                        ? _handleNext
                         : null,
                   ),
                 );

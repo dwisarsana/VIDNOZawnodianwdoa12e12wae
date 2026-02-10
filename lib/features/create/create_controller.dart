@@ -4,6 +4,7 @@ import '../../core/utils/cost_calculator.dart';
 import '../../data/local/shared_prefs_service.dart';
 import '../../data/repositories/draft_repository.dart';
 import '../../data/repositories/template_repository.dart';
+import '../../data/repositories/wallet_repository.dart';
 import '../../domain/enums/generation_quality.dart';
 import '../../domain/models/generation_settings.dart';
 import '../../domain/models/template_item.dart';
@@ -14,11 +15,13 @@ class CreateController extends ChangeNotifier {
   final SharedPrefsService _prefs;
   final TemplateRepository _templateRepo;
   final DraftRepository _draftRepo;
+  final WalletRepository _walletRepo; // Inject
   final ImagePicker _picker = ImagePicker();
 
   CreateState _state = const CreateState();
 
-  CreateController(this._prefs, this._templateRepo, this._draftRepo) {
+  // Added WalletRepository
+  CreateController(this._prefs, this._templateRepo, this._draftRepo, this._walletRepo) {
     _loadTemplatesAndCheckDraft();
   }
 
@@ -31,7 +34,6 @@ class CreateController extends ChangeNotifier {
       final templates = await _templateRepo.getTemplates();
       _state = _state.copyWith(templates: templates, isLoadingTemplates: false);
 
-      // Check Draft
       final draft = _draftRepo.getDraft();
       if (draft != null) {
         _state = _state.copyWith(hasDraftDetected: true);
@@ -46,7 +48,6 @@ class CreateController extends ChangeNotifier {
     final draft = _draftRepo.getDraft();
     if (draft == null) return;
 
-    // Restore logic
     TemplateItem? template;
     if (draft.templateId != null) {
       try {
@@ -60,10 +61,7 @@ class CreateController extends ChangeNotifier {
       cinematicMotion: draft.cameraMotion,
       decorationLevel: draft.decorationLevel,
       moodIntensity: draft.moodIntensity,
-      includeTransitions: draft.enhancementFlags, // Simplified mapping
-      // stabilization not mapped in draft model yet?
-      // "enhancementFlags" in WizardDraft can map to multiple bools if we used bitmask or list.
-      // For now, mapping includeTransitions to it.
+      includeTransitions: draft.enhancementFlags,
     );
 
     _state = _state.copyWith(
@@ -73,7 +71,7 @@ class CreateController extends ChangeNotifier {
       selectedStyleId: draft.styleId,
       settings: restoredSettings,
       estimatedCost: draft.estimatedCost,
-      hasDraftDetected: false, // Dialog handled
+      hasDraftDetected: false,
     );
     notifyListeners();
   }
@@ -177,6 +175,20 @@ class CreateController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Interception logic
+  Future<bool> attemptGenerate() async {
+    final cost = _state.estimatedCost;
+    final hasEnough = _walletRepo.hasSufficientTokens(cost);
+
+    if (!hasEnough) {
+      return false; // Signal to show paywall
+    }
+
+    // Deduct and Proceed
+    await _walletRepo.deductTokens(cost);
+    return true;
+  }
+
   void nextStep() {
     if (_state.currentStep < 3) {
       _state = _state.copyWith(currentStep: _state.currentStep + 1);
@@ -219,7 +231,7 @@ class CreateController extends ChangeNotifier {
       case 1:
         return _state.selectedTemplateId != null;
       case 3: // Review
-        return _state.isReviewConfirmed; // Block generate if not confirmed
+        return _state.isReviewConfirmed;
       default:
         return true;
     }
