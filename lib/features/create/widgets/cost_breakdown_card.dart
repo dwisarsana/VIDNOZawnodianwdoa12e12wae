@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../../../app/theme/app_colors.dart';
-import '../../../../app/theme/app_typography.dart';
-import '../../../../core/widgets/glass_card.dart';
-import '../../../../core/utils/number_utils.dart';
-import '../../../../domain/models/generation_settings.dart';
-import '../../../../domain/models/template_item.dart';
-import '../../../../domain/enums/generation_quality.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/app_typography.dart';
+import '../../../core/widgets/glass_card.dart';
+import '../../../core/utils/number_utils.dart';
+import '../../../domain/models/generation_settings.dart';
+import '../../../domain/models/template_item.dart';
+import '../../../domain/enums/generation_quality.dart';
 
 class CostBreakdownCard extends StatelessWidget {
   final int durationSeconds;

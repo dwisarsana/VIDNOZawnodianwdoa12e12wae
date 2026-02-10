@@ -21,6 +21,12 @@ class SharedPrefsService {
     return _instance!;
   }
 
+  // VisibleForTesting
+  static void reset() {
+    _instance = null;
+    _prefs = null;
+  }
+
   // Generic Getters/Setters
   Future<bool> setBool(String key, bool value) => _prefs!.setBool(key, value);
   bool getBool(String key, {bool defaultValue = false}) => _prefs!.getBool(key) ?? defaultValue;

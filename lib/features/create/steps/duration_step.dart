@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../../app/theme/app_colors.dart';
-import '../../../../app/theme/app_typography.dart';
-import '../../../../domain/enums/generation_quality.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/app_typography.dart';
+import '../../../domain/enums/generation_quality.dart';
 import '../create_controller.dart';
 import '../widgets/duration_selector.dart';
 import '../widgets/cost_breakdown_card.dart';

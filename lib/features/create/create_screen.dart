@@ -5,6 +5,7 @@ import '../../core/widgets/bottom_action_bar.dart';
 import '../../core/widgets/glass_button.dart';
 import '../../core/widgets/secondary_button.dart';
 import '../../data/local/shared_prefs_service.dart';
+import '../../data/repositories/draft_repository.dart';
 import '../../data/repositories/template_repository.dart';
 import 'create_controller.dart';
 import 'widgets/step_header.dart';
@@ -23,6 +24,7 @@ class CreateScreen extends StatefulWidget {
 class _CreateScreenState extends State<CreateScreen> {
   CreateController? _controller;
   final TemplateRepository _templateRepo = TemplateRepository();
+  late final DraftRepository _draftRepo;
 
   @override
   void initState() {
@@ -32,10 +34,62 @@ class _CreateScreenState extends State<CreateScreen> {
 
   Future<void> _init() async {
     final prefs = await SharedPrefsService.getInstance();
+    _draftRepo = DraftRepository(prefs);
     if (!mounted) return;
+
     setState(() {
-      _controller = CreateController(prefs, _templateRepo);
+      _controller = CreateController(prefs, _templateRepo, _draftRepo);
     });
+
+    // Listen for draft detection
+    _controller!.addListener(_checkDraft);
+  }
+
+  void _checkDraft() {
+    if (!mounted) return;
+    if (_controller!.state.hasDraftDetected) {
+      // Show Dialog
+      // Need to avoid showing multiple times or if already handling
+      // Controller keeps hasDraftDetected=true until handled.
+      // We should show it once.
+      // But we are in a listener.
+      // Use a post-frame callback or check if dialog is open?
+      // Better: Reset flag immediately in controller when taking action,
+      // but here we just want to trigger UI.
+      // Let's show it.
+
+      // Prevent re-entry if needed, but for simple mock flow:
+      _controller!.removeListener(_checkDraft); // Remove listener to avoid loop/re-trigger
+
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (ctx) => AlertDialog(
+          backgroundColor: AppColors.bgElevated,
+          title: const Text('Resume Draft?', style: TextStyle(color: Colors.white)),
+          content: const Text(
+            'You have an unsaved project draft. Would you like to resume it?',
+            style: TextStyle(color: Colors.white70),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+                _controller!.discardDraft();
+              },
+              child: const Text('Discard', style: TextStyle(color: AppColors.danger)),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+                _controller!.resumeDraft();
+              },
+              child: const Text('Resume', style: TextStyle(color: AppColors.primary)),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   Future<bool> _onWillPop() async {
@@ -45,6 +99,12 @@ class _CreateScreenState extends State<CreateScreen> {
       return false;
     }
     return true;
+  }
+
+  @override
+  void dispose() {
+    _controller?.removeListener(_checkDraft);
+    super.dispose();
   }
 
   @override
@@ -87,7 +147,7 @@ class _CreateScreenState extends State<CreateScreen> {
                       UploadStep(controller: _controller!),
                       StyleStep(controller: _controller!),
                       DurationStep(controller: _controller!),
-                      const ReviewStep(),
+                      ReviewStep(controller: _controller!),
                     ],
                   );
                 },

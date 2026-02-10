@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../../app/theme/app_colors.dart';
-import '../../../../app/theme/app_radii.dart';
-import '../../../../app/theme/app_typography.dart';
-import '../../../../core/widgets/glass_chip.dart';
-import '../../../../domain/enums/duration_option.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/app_radii.dart';
+import '../../../app/theme/app_typography.dart';
+import '../../../core/widgets/glass_chip.dart';
+import '../../../domain/enums/duration_option.dart';
 import '../create_controller.dart';
 
 class DurationSelector extends StatelessWidget {

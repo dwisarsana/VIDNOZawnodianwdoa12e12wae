@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import '../../core/utils/cost_calculator.dart';
 import '../../domain/models/generation_settings.dart';
-import '../../domain/enums/generation_quality.dart';
 import '../../domain/models/template_item.dart';
 
+@immutable
 class CreateState {
   final int currentStep;
   final List<String> selectedImages;
@@ -15,6 +15,8 @@ class CreateState {
   final List<TemplateItem> templates;
   final bool isLoadingTemplates;
   final int estimatedCost;
+  final bool isReviewConfirmed;
+  final bool hasDraftDetected; // Signal to UI
 
   const CreateState({
     this.currentStep = 0,
@@ -27,6 +29,8 @@ class CreateState {
     this.templates = const [],
     this.isLoadingTemplates = false,
     this.estimatedCost = 0,
+    this.isReviewConfirmed = false,
+    this.hasDraftDetected = false,
   });
 
   CreateState copyWith({
@@ -40,6 +44,8 @@ class CreateState {
     List<TemplateItem>? templates,
     bool? isLoadingTemplates,
     int? estimatedCost,
+    bool? isReviewConfirmed,
+    bool? hasDraftDetected,
   }) {
     return CreateState(
       currentStep: currentStep ?? this.currentStep,
@@ -52,6 +58,8 @@ class CreateState {
       templates: templates ?? this.templates,
       isLoadingTemplates: isLoadingTemplates ?? this.isLoadingTemplates,
       estimatedCost: estimatedCost ?? this.estimatedCost,
+      isReviewConfirmed: isReviewConfirmed ?? this.isReviewConfirmed,
+      hasDraftDetected: hasDraftDetected ?? this.hasDraftDetected,
     );
   }
 }
