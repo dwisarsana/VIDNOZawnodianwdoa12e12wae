@@ -68,6 +68,7 @@ class GlassButton extends StatelessWidget {
     Widget container = Container(
       width: isFullWidth ? double.infinity : width,
       height: height,
+      padding: (width == null && !isFullWidth) ? const EdgeInsets.symmetric(horizontal: 24) : null,
       decoration: BoxDecoration(
         color: gradient == null ? backgroundColor : null,
         gradient: gradient,

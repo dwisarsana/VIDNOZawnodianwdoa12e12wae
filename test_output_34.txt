@@ -1,0 +1,93 @@
+00:00 +0: loading /app/test/templates_screen_test.dart                                                                                                                                                 00:01 +0: loading /app/test/templates_screen_test.dart                                                                                                                                                 00:02 +0: loading /app/test/templates_screen_test.dart                                                                                                                                                 00:03 +0: loading /app/test/templates_screen_test.dart                                                                                                                                                 00:04 +0: loading /app/test/templates_screen_test.dart                                                                                                                                                 00:04 +0: Templates Screen loads and displays categories/grid                                                                                                                                          00:05 +0: Templates Screen loads and displays categories/grid                                                                                                                                          00:06 +0: Templates Screen loads and displays categories/grid                                                                                                                                          00:06 +0: Templates Screen loads and displays categories/grid
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞═════════════════════════════════════════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 55 pixels on the right.
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in the rendering with a yellow and
+black striped pattern. This is usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget) to force the children of the
+RenderFlex to fit within the available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that there is content that cannot be
+seen. If the content is legitimately bigger than the available space, consider clipping it with a
+ClipRect widget before putting it in the flex, or using a scrollable container rather than a Flex,
+like a ListView.
+The specific RenderFlex in question is: RenderFlex#05b93 DISPOSED OVERFLOWING:
+  creator: MultiChildRenderObjectElement#50313(DEFUNCT) ←
+    SingleChildRenderObjectElement#555bb(DEFUNCT) ← SingleChildRenderObjectElement#953c0(DEFUNCT) ←
+    SingleChildRenderObjectElement#e48bf(DEFUNCT) ← SingleChildRenderObjectElement#7af6b(DEFUNCT) ←
+    StatelessElement#ff04b(DEFUNCT) ← SingleChildRenderObjectElement#695eb(DEFUNCT) ←
+    StatefulElement#dd3a5(DEFUNCT) ← StatelessElement#fb3af(DEFUNCT) ←
+    SingleChildRenderObjectElement#92c9f(DEFUNCT) ← InheritedElement#827c5(DEFUNCT) ←
+    StatelessElement#74f05(DEFUNCT) ← ⋯
+  parentData: offset=Offset(0.0, 12.0) (can use size)
+  constraints: BoxConstraints(0.0<=w<=140.0, 0.0<=h<=44.0)
+  size: Size(140.0, 20.0)
+  direction: horizontal
+  mainAxisAlignment: center
+  mainAxisSize: min
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:06 +0 -1: Templates Screen loads and displays categories/grid [E]
+  Test failed. See exception logs above.
+  The test description was: Templates Screen loads and displays categories/grid
+
+══╡ EXCEPTION CAUGHT BY WIDGET INSPECTOR ╞══════════════════════════════════════════════════════════
+The following assertion was thrown:
+Looking up a deactivated widget's ancestor is unsafe.
+At this point the state of the widget's element tree is no longer stable.
+To safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by
+calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.
+
+When the exception was thrown, this was the stack:
+#0      Element._debugCheckStateIsActiveForAncestorLookup.<anonymous closure> (package:flutter/src/widgets/framework.dart:5052:9)
+#1      Element._debugCheckStateIsActiveForAncestorLookup (package:flutter/src/widgets/framework.dart:5066:6)
+#2      Element.visitAncestorElements (package:flutter/src/widgets/framework.dart:5177:12)
+#3      _describeRelevantUserCode (package:flutter/src/widgets/widget_inspector.dart:4244:13)
+#4      _parseDiagnosticsNode (package:flutter/src/widgets/widget_inspector.dart:4163:12)
+#5      debugTransformDebugCreator (package:flutter/src/widgets/widget_inspector.dart:4142:21)
+#6      _FlutterErrorDetailsNode.builder (package:flutter/src/foundation/assertions.dart:1310:31)
+#7      DiagnosticableNode.getProperties (package:flutter/src/foundation/diagnostics.dart:2945:68)
+#8      TextTreeRenderer._debugRender (package:flutter/src/foundation/diagnostics.dart:1270:63)
+#9      TextTreeRenderer.render (package:flutter/src/foundation/diagnostics.dart:1137:14)
+#10     FlutterError.dumpErrorToConsole (package:flutter/src/foundation/assertions.dart:1040:13)
+#11     _defaultTestExceptionReporter (package:flutter_test/src/test_exception_reporter.dart:29:16)
+#12     TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:821:28)
+<asynchronous suspension>
+(elided 8 frames from dart:async and package:stack_trace)
+
+This exception was caught while trying to describe the user-relevant code of another error.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY WIDGET INSPECTOR ╞══════════════════════════════════════════════════════════
+The following assertion was thrown:
+Looking up a deactivated widget's ancestor is unsafe.
+At this point the state of the widget's element tree is no longer stable.
+To safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by
+calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.
+
+When the exception was thrown, this was the stack:
+#0      Element._debugCheckStateIsActiveForAncestorLookup.<anonymous closure> (package:flutter/src/widgets/framework.dart:5052:9)
+#1      Element._debugCheckStateIsActiveForAncestorLookup (package:flutter/src/widgets/framework.dart:5066:6)
+#2      Element.visitAncestorElements (package:flutter/src/widgets/framework.dart:5177:12)
+#3      _describeRelevantUserCode (package:flutter/src/widgets/widget_inspector.dart:4244:13)
+#4      _parseDiagnosticsNode (package:flutter/src/widgets/widget_inspector.dart:4163:12)
+#5      debugTransformDebugCreator (package:flutter/src/widgets/widget_inspector.dart:4142:21)
+#6      _FlutterErrorDetailsNode.builder (package:flutter/src/foundation/assertions.dart:1310:31)
+#7      DiagnosticableNode.emptyBodyDescription (package:flutter/src/foundation/diagnostics.dart:2941:45)
+#8      TextTreeRenderer._debugRender (package:flutter/src/foundation/diagnostics.dart:1307:14)
+#9      TextTreeRenderer.render (package:flutter/src/foundation/diagnostics.dart:1137:14)
+#10     FlutterError.dumpErrorToConsole (package:flutter/src/foundation/assertions.dart:1040:13)
+#11     _defaultTestExceptionReporter (package:flutter_test/src/test_exception_reporter.dart:29:16)
+#12     TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:821:28)
+<asynchronous suspension>
+(elided 8 frames from dart:async and package:stack_trace)
+
+This exception was caught while trying to describe the user-relevant code of another error.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+To run this test again: /opt/flutter/bin/cache/dart-sdk/bin/dart test /app/test/templates_screen_test.dart -p vm --plain-name 'Templates Screen loads and displays categories/grid'
+00:06 +0 -1: Some tests failed.

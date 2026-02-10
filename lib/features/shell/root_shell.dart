@@ -37,8 +37,6 @@ class _RootShellState extends State<RootShell> {
   @override
   Widget build(BuildContext context) {
     if (_controller == null) {
-      // Return a temporary scaffold or loading while controller inits
-      // Since it's fast (local prefs), this flash is minimal.
       return const Scaffold(body: SizedBox.shrink());
     }
 
@@ -46,14 +44,22 @@ class _RootShellState extends State<RootShell> {
       animation: _controller!,
       builder: (context, _) {
         return Scaffold(
-          extendBody: true, // Necessary for glass effect behind nav bar
+          extendBody: true,
           body: IndexedStack(
             index: _controller!.currentIndex,
-            children: const [
-              CreateScreen(),
-              ProjectsScreen(),
-              TemplatesScreen(),
-              ProfileScreen(),
+            children: [
+              // Pass the pending template to CreateScreen
+              CreateScreen(
+                pendingTemplate: _controller!.pendingTemplateSelection,
+                onConsumePendingTemplate: _controller!.consumePendingTemplate,
+              ),
+              const ProjectsScreen(),
+              TemplatesScreen(
+                onUseTemplate: (template) {
+                  _controller!.switchToCreateWithTemplate(template);
+                },
+              ),
+              const ProfileScreen(),
             ],
           ),
           bottomNavigationBar: _GlassNavBar(
@@ -77,16 +83,15 @@ class _GlassNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Glass container
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: Container(
-          height: 84 + MediaQuery.of(context).padding.bottom / 2, // Taller for aesthetics
+          height: 84 + MediaQuery.of(context).padding.bottom / 2,
           padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom / 2),
           decoration: BoxDecoration(
-            color: AppColors.glassTintMed, // Semi-transparent
+            color: AppColors.glassTintMed,
             border: Border(
               top: BorderSide(color: AppColors.glassBorder, width: 0.5),
             ),

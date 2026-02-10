@@ -9,6 +9,7 @@ import '../../data/repositories/draft_repository.dart';
 import '../../data/repositories/project_repository.dart';
 import '../../data/repositories/template_repository.dart';
 import '../../data/repositories/wallet_repository.dart';
+import '../../domain/models/template_item.dart';
 import '../profile/paywall/paywall_screen.dart';
 import '../result/result_screen.dart';
 import 'create_controller.dart';
@@ -20,7 +21,14 @@ import 'steps/duration_step.dart';
 import 'steps/review_step.dart';
 
 class CreateScreen extends StatefulWidget {
-  const CreateScreen({super.key});
+  final TemplateItem? pendingTemplate;
+  final VoidCallback? onConsumePendingTemplate;
+
+  const CreateScreen({
+    super.key,
+    this.pendingTemplate,
+    this.onConsumePendingTemplate,
+  });
 
   @override
   State<CreateScreen> createState() => _CreateScreenState();
@@ -39,6 +47,18 @@ class _CreateScreenState extends State<CreateScreen> {
     _init();
   }
 
+  @override
+  void didUpdateWidget(CreateScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.pendingTemplate != null && _controller != null) {
+      // Consume
+      _applyPendingTemplate(widget.pendingTemplate!);
+      if (widget.onConsumePendingTemplate != null) {
+        widget.onConsumePendingTemplate!();
+      }
+    }
+  }
+
   Future<void> _init() async {
     final prefs = await SharedPrefsService.getInstance();
     _draftRepo = DraftRepository(prefs);
@@ -52,6 +72,34 @@ class _CreateScreenState extends State<CreateScreen> {
     });
 
     _controller!.addListener(_checkDraft);
+
+    // Check pending template on first load too
+    if (widget.pendingTemplate != null) {
+      _applyPendingTemplate(widget.pendingTemplate!);
+      if (widget.onConsumePendingTemplate != null) {
+        widget.onConsumePendingTemplate!();
+      }
+    }
+  }
+
+  void _applyPendingTemplate(TemplateItem template) {
+    _controller!.selectTemplate(template.id);
+    // Move to step 2 (Style) or maybe keep user on style selection?
+    // "Deep link to Create with prefilled state".
+    // If template selected, maybe we are on style step or duration step?
+    // Let's set step to 1 (Style) to show it's selected, OR step 2 (Duration) to proceed.
+    // If images are not selected (step 0), user needs to upload.
+    // If mock, we might be stuck at 0.
+    // Let's rely on controller state. If images empty, we stay at 0.
+    // But `selectTemplate` updates state.
+    // If we want to show it selected, we ensure we are at least on step 1?
+    // Let's just select it. If user has images (draft), it works.
+
+    // Actually, if coming from Templates tab, user likely hasn't selected images yet.
+    // So we should be on Step 0 (Upload).
+    // The template is pre-selected for Step 1.
+    // Controller logic `selectTemplate` handles setting the ID.
+    // We don't force step change here unless we want to jump.
   }
 
   void _checkDraft() {
@@ -92,20 +140,16 @@ class _CreateScreenState extends State<CreateScreen> {
   Future<void> _handleNext() async {
     final isLast = _controller!.state.currentStep == 3;
     if (isLast) {
-      // 1. Check Wallet
       final canPay = await _controller!.attemptGenerate();
       if (!canPay) {
         if (mounted) {
           await PaywallScreen.show(context);
-          // Retry logic left to user to click again
         }
         return;
       }
 
-      // 2. Start Generation (Stream)
       final stream = _controller!.startGeneration();
 
-      // 3. Show Progress Sheet
       if (mounted) {
         showModalBottomSheet(
           context: context,
@@ -117,18 +161,15 @@ class _CreateScreenState extends State<CreateScreen> {
             progressStream: stream,
             onCancel: () {
               Navigator.pop(ctx);
-              // Handle cancel logic (restore tokens? or just stop)
-              // Mock: just close.
             },
             onRetry: () {
               Navigator.pop(ctx);
-              _handleNext(); // Retry flow
+              _handleNext();
             },
             onSuccess: (path) {
-              Navigator.pop(ctx); // Close sheet
+              Navigator.pop(ctx);
               _controller!.finalizeGeneration(true, path);
 
-              // Navigate to Result
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => ResultScreen(

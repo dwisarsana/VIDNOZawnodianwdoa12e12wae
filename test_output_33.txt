@@ -1,0 +1,18 @@
+00:00 +0: loading /app/test/templates_screen_test.dart                                                                                                                                                 00:01 +0: loading /app/test/templates_screen_test.dart                                                                                                                                                 lib/features/templates/templates_screen.dart:81:19: Error: No named parameter with the name 'padding'.
+                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 100),
+                  ^^^^^^^
+/opt/flutter/packages/flutter/lib/src/widgets/scroll_view.dart:700:9: Context: Found this candidate, but the arguments don't match.
+  const CustomScrollView({
+        ^^^^^^^^^^^^^^^^
+00:01 +0 -1: loading /app/test/templates_screen_test.dart [E]
+  Failed to load "/app/test/templates_screen_test.dart":
+  Compilation failed for testPath=/app/test/templates_screen_test.dart: lib/features/templates/templates_screen.dart:81:19: Error: No named parameter with the name 'padding'.
+                    padding: const EdgeInsets.fromLTRB(24, 0, 24, 100),
+                    ^^^^^^^
+  /opt/flutter/packages/flutter/lib/src/widgets/scroll_view.dart:700:9: Context: Found this candidate, but the arguments don't match.
+    const CustomScrollView({
+          ^^^^^^^^^^^^^^^^
+  .
+
+To run this test again: /opt/flutter/bin/cache/dart-sdk/bin/dart test /app/test/templates_screen_test.dart -p vm --plain-name 'loading /app/test/templates_screen_test.dart'
+00:01 +0 -1: Some tests failed.
